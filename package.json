@@ -1,15 +1,15 @@
 {
-  "name": "racer",
+  "name": "lap",
   "description": "Performance testing library",
   "version": "0.1.0",
-  "homepage": "https://github.com/ryanve/racer",
+  "homepage": "https://github.com/ryanve/lap",
   "license": "MIT",
   "author": "Ryan Van Etten",
   "keywords": ["performance", "speed", "time", "server", "browser"],
-  "main": "./racer.js",
+  "main": "./lap.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryanve/racer.git"
+    "url": "https://github.com/ryanve/lap.git"
   },
   "devDependencies": {
     "aok": "~1.8.0",

@@ -1,6 +1,6 @@
 /*!
- * racer 0.1.0+201403031041
- * https://github.com/ryanve/racer
+ * lap 0.1.0+201403031118
+ * https://github.com/ryanve/lap
  * MIT License (c) 2014 Ryan Van Etten
  */
 
