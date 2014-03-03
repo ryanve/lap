@@ -44,9 +44,23 @@
     return bool;
   }
   
+  aok('methods', !aok.fail(['timestamp', 'time', 'speed', 'race', 'rate'], function(m) {
+    return racer[m] && racer[m].sync && racer[m].async;
+  }, aok, 1));
+  
   aok('timestamp()', racer.timestamp() > 0);
-  aok('time()', testNum('time', 100, count));
-  aok('speed()', testNum('speed', 100, count));
-  aok('race()', testMap('race', 100, [count, count]));
-  aok('rate()', testMap('rate', 100, [count, count]));
+  aok('time()', testNum('time', 1e3, count));
+  aok('speed()', testNum('speed', 1e3, count));
+  aok('race()', testMap('race', 1e3, [count, count]));
+  aok('rate()', testMap('rate', 1e3, [count, count]));
+  
+  racer.time.async(1e3, count, function(err, result) {
+    aok('async result', !err && typeof result == 'number');
+  });
+  
+  racer.time.async(1e3, function() {
+    throw new Error;
+  }, function(err) {
+    aok('async error', !!err);
+  });
 }(this));
