@@ -1,0 +1,21 @@
+{
+  "name": "racer",
+  "description": "Performance testing library",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ryanve/racer",
+  "license": "MIT",
+  "author": "Ryan Van Etten",
+  "keywords": ["performance", "speed", "time", "server", "browser"],
+  "main": "./racer.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanve/racer.git"
+  },
+  "devDependencies": {
+    "aok": "~1.8.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.3.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.8.0"
+  }
+}
