@@ -1,7 +1,7 @@
 # racer
 #### JavaScript performance testing library for the browser or server
 
-## API ([0.1](../releases))
+## API ([0.1](../../releases))
 
 #### `racer.timestamp()`
 - Get a hi-resolution timestamp
