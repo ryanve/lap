@@ -1,8 +1,8 @@
 (function(root, name, make) {
   if (typeof module != 'undefined' && module.exports) module.exports = make();
   else root[name] = make();
-}(this, 'racer', function() {
-  var racer = {}, slice = [].slice;
+}(this, 'lap', function() {
+  var api = {}, slice = [].slice;
 
   /**
    * @param {string} name
@@ -11,7 +11,7 @@
   function expose(name, fn) {
     fn['sync'] = fn;
     fn['async'] = async;
-    racer[name] = fn;
+    api[name] = fn;
   }
   
   /** 
@@ -22,11 +22,11 @@
     setTimeout(function() {
       var err, result;
       try {
-        result = fn.apply(racer, args);
+        result = fn.apply(api, args);
       } catch (e) { 
         err = e; 
       }
-      cb.call(racer, err, result);
+      cb.call(api, err, result);
     }, 0);
   }
 
@@ -36,7 +36,7 @@
    * @param {number} trials
    */
   function map(rivals, fn, trials) {
-    for (var r = [], l = rivals.length, i = 0; i < l;) r[i] = fn.call(racer, trials, rivals[i++]);
+    for (var r = [], l = rivals.length, i = 0; i < l;) r[i] = fn.call(api, trials, rivals[i++]);
     return r;
   }
 
@@ -58,9 +58,9 @@
   * @return {number} milliseconds for `fn` to run `trials` times
   */
   expose('time', function(trials, fn) {
-    var i = 0, start = racer['timestamp']();
-    while (i++ < trials) fn.call(racer);
-    return racer['timestamp']()-start;
+    var i = 0, start = api['timestamp']();
+    while (i++ < trials) fn.call(api);
+    return api['timestamp']()-start;
   });
 
   /**
@@ -68,7 +68,7 @@
   * @return {number} operations per second
   */
   expose('speed', function(trials, fn) {
-    return 1000*trials/racer['time'](trials, fn);
+    return 1000*trials/api['time'](trials, fn);
   });
 
   /**
@@ -77,7 +77,7 @@
   * @return {Array} map of times
   */
   expose('race', function(trials, rivals) {
-    return map(rivals, racer['time'], trials);
+    return map(rivals, api['time'], trials);
   });
 
   /**
@@ -86,8 +86,8 @@
   * @return {Array} map of speeds
   */
   expose('rate', function(trials, rivals) {
-    return map(rivals, racer['speed'], trials);
+    return map(rivals, api['speed'], trials);
   });
   
-  return racer;
+  return api;
 }));
