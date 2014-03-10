@@ -1,11 +1,11 @@
 {
   "name": "lap",
   "description": "Performance testing library",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/ryanve/lap",
   "license": "MIT",
   "author": "Ryan Van Etten",
-  "keywords": ["performance", "speed", "time", "server", "browser"],
+  "keywords": ["performance", "speed", "time", "timestamp", "server", "browser"],
   "main": "./lap.js",
   "repository": {
     "type": "git",

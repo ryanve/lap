@@ -1,5 +1,5 @@
 /*!
- * lap 0.1.0+201403050635
+ * lap 0.2.0+201403101046
  * https://github.com/ryanve/lap
  * MIT License (c) 2014 Ryan Van Etten
  */
@@ -37,16 +37,6 @@
   }
 
   /**
-   * @param {{length:number}} rivals
-   * @param {Function} fn
-   * @param {number} trials
-   */
-  function map(rivals, fn, trials) {
-    for (var r = [], l = rivals.length, i = 0; i < l;) r[i] = fn.call(api, trials, rivals[i++]);
-    return r;
-  }
-
-  /**
   * @return {number} hi-res timestamp in milliseconds
   */
   expose('timestamp', typeof performance != 'undefined' && performance.now ? function() {
@@ -59,41 +49,30 @@
   });
 
   /**
-  * @param {number} trials
-  * @param {Function} fn
-  * @return {number} milliseconds for `fn` to run `trials` times
+  * @param {number} laps
+  * @param {Array|Function} racers
+  * @return {Array} milliseconds for each racer to run `laps` times
   */
-  expose('time', function(trials, fn) {
-    var i = 0, start = api['timestamp']();
-    while (i++ < trials) fn.call(api);
-    return api['timestamp']()-start;
+  expose('time', function(laps, racers) {
+    if (typeof racers == 'function') racers = [racers];
+    var start, end, f, n, r = [], i = 0, l = racers.length, stamp = api['timestamp'];
+    for (start = end || stamp(); i < l; end = stamp(), r[i++] = end - start) {
+      for (f = racers[i], n = 0; n++ < laps;) {
+        f.call(api);
+      }
+    }
+    return r;
   });
 
   /**
-  * @param {Function} fn
-  * @return {number} operations per second
-  */
-  expose('speed', function(trials, fn) {
-    return 1000*trials/api['time'](trials, fn);
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {number} operations per second
+   */
+  expose('speed', function(laps, racers) {
+    for (var r = api['time'](laps, racers), i = r.length; i--;) r[i] = 1000*laps/r[i];
+    return r;
   });
 
-  /**
-  * @param {number} trials
-  * @param {Array} rivals
-  * @return {Array} map of times
-  */
-  expose('race', function(trials, rivals) {
-    return map(rivals, api['time'], trials);
-  });
-
-  /**
-  * @param {number} trials
-  * @param {Array} rivals
-  * @return {Array} map of speeds
-  */
-  expose('rate', function(trials, rivals) {
-    return map(rivals, api['speed'], trials);
-  });
-  
   return api;
 }));
