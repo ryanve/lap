@@ -30,32 +30,31 @@
     return bool;
   }
   
-  function testNum(method, trials, fn) {
+  function testNum(method, laps, fn) {
     reset();
-    var bool = typeof lap[method](trials, fn) == 'number' && counted(trials);
-    reset();
-    return bool;
-  }
-  
-  function testMap(method, trials, rivals) {
-    reset();
-    var bool = isArray(lap[method](trials, rivals), rivals.length, 'number') && counted(trials*rivals.length);
+    var bool = lap[method](laps, fn) >= 0 && counted(laps);
     reset();
     return bool;
   }
   
-  aok('methods', !aok.fail(['timestamp', 'time', 'speed', 'race', 'rate'], function(m) {
+  function testMap(method, laps, racers) {
+    reset();
+    var bool = isArray(lap[method](laps, racers), racers.length, 'number') && counted(laps*racers.length);
+    reset();
+    return bool;
+  }
+  
+  aok('methods', !aok.fail(['timestamp', 'time', 'speed'], function(m) {
     return lap[m] && lap[m].sync && lap[m].async;
   }, aok, 1));
   
   aok('timestamp()', lap.timestamp() > 0);
-  aok('time()', testNum('time', 1e3, count));
-  aok('speed()', testNum('speed', 1e3, count));
-  aok('race()', testMap('race', 1e3, [count, count]));
-  aok('rate()', testMap('rate', 1e3, [count, count]));
+  aok('time(laps, fn)', testNum('time', 1e3, count));
+  aok('time(laps, racers) ', testMap('time', 1e3, [count, count]));
+  aok('speed()', testMap('speed', 1e3, [count, count]));
   
   lap.time.async(1e3, count, function(err, result) {
-    aok('async result', !err && typeof result == 'number');
+    aok('async result', !err && isArray(result));
   });
   
   lap.time.async(1e3, function() {

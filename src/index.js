@@ -31,16 +31,6 @@
   }
 
   /**
-   * @param {{length:number}} racers
-   * @param {Function} fn
-   * @param {number} laps
-   */
-  function map(racers, fn, laps) {
-    for (var r = [], l = racers.length, i = 0; i < l;) r[i] = fn.call(api, laps, racers[i++]);
-    return r;
-  }
-
-  /**
   * @return {number} hi-res timestamp in milliseconds
   */
   expose('timestamp', typeof performance != 'undefined' && performance.now ? function() {
@@ -54,40 +44,32 @@
 
   /**
   * @param {number} laps
-  * @param {Function} fn
-  * @return {number} milliseconds for `fn` to run `laps` times
+  * @param {Array|Function} racers
+  * @return {Array} milliseconds for each racer to run `laps` times
   */
-  expose('time', function(laps, fn) {
-    var i = 0, start = api['timestamp']();
-    while (i++ < laps) fn.call(api);
-    return api['timestamp']()-start;
+  expose('time', function(laps, racers) {
+    if (typeof racers == 'function') racers = [racers];
+    var start, end, f, n, r = [], i = 0, l = racers.length, stamp = api['timestamp'];
+    for (start = end || stamp(); i < l; end = stamp(), r[i++] = end - start) {
+      for (f = racers[i], n = 0; n++ < laps;) {
+        f.call(api);
+      }
+    }
+    return r;
   });
 
   /**
-  * @param {Function} fn
-  * @return {number} operations per second
-  */
-  expose('speed', function(laps, fn) {
-    return 1000*laps/api['time'](laps, fn);
-  });
-
-  /**
-  * @param {number} laps
-  * @param {Array} racers
-  * @return {Array} map of times
-  */
-  expose('race', function(laps, racers) {
-    return map(racers, api['time'], laps);
-  });
-
-  /**
-  * @param {number} laps
-  * @param {Array} racers
-  * @return {Array} map of speeds
-  */
-  expose('rate', function(laps, racers) {
-    return map(racers, api['speed'], laps);
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {number} operations per second
+   */
+  expose('speed', function(laps, racers) {
+    for (var r = api['time'](laps, racers), i = r.length; i--;) r[i] = 1000*laps/r[i];
+    return r;
   });
   
+  
+  api['race'] = api['time'];
+  api['rate'] = api['speed'];
   return api;
 }));
