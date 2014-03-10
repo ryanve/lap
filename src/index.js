@@ -31,12 +31,12 @@
   }
 
   /**
-   * @param {{length:number}} rivals
+   * @param {{length:number}} racers
    * @param {Function} fn
    * @param {number} trials
    */
-  function map(rivals, fn, trials) {
-    for (var r = [], l = rivals.length, i = 0; i < l;) r[i] = fn.call(api, trials, rivals[i++]);
+  function map(racers, fn, trials) {
+    for (var r = [], l = racers.length, i = 0; i < l;) r[i] = fn.call(api, trials, racers[i++]);
     return r;
   }
 
@@ -73,20 +73,20 @@
 
   /**
   * @param {number} trials
-  * @param {Array} rivals
+  * @param {Array} racers
   * @return {Array} map of times
   */
-  expose('race', function(trials, rivals) {
-    return map(rivals, api['time'], trials);
+  expose('race', function(trials, racers) {
+    return map(racers, api['time'], trials);
   });
 
   /**
   * @param {number} trials
-  * @param {Array} rivals
+  * @param {Array} racers
   * @return {Array} map of speeds
   */
-  expose('rate', function(trials, rivals) {
-    return map(rivals, api['speed'], trials);
+  expose('rate', function(trials, racers) {
+    return map(racers, api['speed'], trials);
   });
   
   return api;
