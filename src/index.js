@@ -33,10 +33,10 @@
   /**
    * @param {{length:number}} racers
    * @param {Function} fn
-   * @param {number} trials
+   * @param {number} laps
    */
-  function map(racers, fn, trials) {
-    for (var r = [], l = racers.length, i = 0; i < l;) r[i] = fn.call(api, trials, racers[i++]);
+  function map(racers, fn, laps) {
+    for (var r = [], l = racers.length, i = 0; i < l;) r[i] = fn.call(api, laps, racers[i++]);
     return r;
   }
 
@@ -53,13 +53,13 @@
   });
 
   /**
-  * @param {number} trials
+  * @param {number} laps
   * @param {Function} fn
-  * @return {number} milliseconds for `fn` to run `trials` times
+  * @return {number} milliseconds for `fn` to run `laps` times
   */
-  expose('time', function(trials, fn) {
+  expose('time', function(laps, fn) {
     var i = 0, start = api['timestamp']();
-    while (i++ < trials) fn.call(api);
+    while (i++ < laps) fn.call(api);
     return api['timestamp']()-start;
   });
 
@@ -67,26 +67,26 @@
   * @param {Function} fn
   * @return {number} operations per second
   */
-  expose('speed', function(trials, fn) {
-    return 1000*trials/api['time'](trials, fn);
+  expose('speed', function(laps, fn) {
+    return 1000*laps/api['time'](laps, fn);
   });
 
   /**
-  * @param {number} trials
+  * @param {number} laps
   * @param {Array} racers
   * @return {Array} map of times
   */
-  expose('race', function(trials, racers) {
-    return map(racers, api['time'], trials);
+  expose('race', function(laps, racers) {
+    return map(racers, api['time'], laps);
   });
 
   /**
-  * @param {number} trials
+  * @param {number} laps
   * @param {Array} racers
   * @return {Array} map of speeds
   */
-  expose('rate', function(trials, racers) {
-    return map(racers, api['speed'], trials);
+  expose('rate', function(laps, racers) {
+    return map(racers, api['speed'], laps);
   });
   
   return api;
