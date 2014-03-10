@@ -67,9 +67,6 @@
     for (var r = api['time'](laps, racers), i = r.length; i--;) r[i] = 1000*laps/r[i];
     return r;
   });
-  
-  
-  api['race'] = api['time'];
-  api['rate'] = api['speed'];
+
   return api;
 }));
