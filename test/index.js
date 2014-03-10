@@ -2,7 +2,8 @@
   var common = typeof module != 'undefined' && !!module.exports;
   var aok = common ? require('aok') : root.aok;
   var lap = common ? require('../src') : root.lap;
-  
+  if (![].some) aok.prototype.express = aok.info; // alert in ie8-
+
   function are(stack, type) {
     return !aok.fail(stack, function(v) {
       return typeof v === type;
