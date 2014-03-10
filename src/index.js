@@ -31,8 +31,8 @@
   }
 
   /**
-  * @return {number} hi-res timestamp in milliseconds
-  */
+   * @return {number} hi-res timestamp in milliseconds
+   */
   expose('timestamp', typeof performance != 'undefined' && performance.now ? function() {
     return performance.now();
   } : typeof process != 'undefined' && process.hrtime ? function() {
@@ -41,7 +41,7 @@
   } : Date.now ? function() {
     return Date.now();
   } : function() {
-    return +new Date;
+    return (new Date).getTime();
   });
 
   /**
