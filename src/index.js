@@ -43,10 +43,10 @@
   });
 
   /**
-  * @param {number} laps
-  * @param {Array|Function} racers
-  * @return {Array} milliseconds for each racer to run `laps` times
-  */
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {Array} times (milliseconds) for each racer to run `laps` times
+   */
   expose('time', function(laps, racers) {
     if (typeof racers == 'function') racers = [racers];
     var start, end, f, n, r = [], i = 0, l = racers.length, stamp = api['timestamp'];
@@ -61,7 +61,7 @@
   /**
    * @param {number} laps
    * @param {Array|Function} racers
-   * @return {number} operations per second
+   * @return {Array} speeds (operations/second) for each racer to run `laps` times
    */
   expose('speed', function(laps, racers) {
     for (var r = api['time'](laps, racers), i = r.length; i--;) r[i] = 1000*laps/r[i];
