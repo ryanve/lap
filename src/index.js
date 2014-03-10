@@ -36,9 +36,11 @@
   expose('timestamp', typeof performance != 'undefined' && performance.now ? function() {
     return performance.now();
   } : typeof process != 'undefined' && process.hrtime ? function() {
-      var a = process.hrtime(); // [seconds, nanoseconds]
-      return 1e3*a[0] + a[1]/1e6;
-  } : Date.now || function() {
+    var a = process.hrtime(); // [seconds, nanoseconds]
+    return 1e3*a[0] + a[1]/1e6;
+  } : Date.now ? function() {
+    return Date.now();
+  } : function() {
     return +new Date;
   });
 
