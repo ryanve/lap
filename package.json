@@ -1,7 +1,7 @@
 {
   "name": "lap",
   "description": "Performance testing library",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/ryanve/lap",
   "license": "MIT",
   "author": "Ryan Van Etten",
