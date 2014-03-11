@@ -2,46 +2,62 @@
   var common = typeof module != 'undefined' && !!module.exports;
   var aok = common ? require('aok') : root.aok;
   var lap = common ? require('../src') : root.lap;
+  var spy = surveil();
   if (![].some) aok.prototype.express = aok.info; // alert in ie8-
 
+  /**
+   * @param {{length:number}} stack
+   * @param {string} type
+   * @return {boolean}
+   */
   function are(stack, type) {
     return !aok.fail(stack, function(v) {
       return typeof v === type;
     }, stack, 1);
   }
   
-  function isArray(o, l, type) {
+  /**
+   * @param {*} o value to test
+   * @param {!(number|Array)=} of expected length
+   * @param {string=} type expected type for values
+   * @return {boolean}
+   */
+  function isArray(o, of, type) {
     if (Array.isArray ? !Array.isArray(o) : !o) return false;
-    if (typeof l == 'number' ? l !== o.length : typeof o.length != 'number') return false;
+    if (o.length !== (of === +of ? of : isArray(of) ? of.length : +o.length)) return false;
     return !type || are(o, type);
   }
   
-  function count() { 
-    typeof count.current == 'number' ? count.current++ : count.current = 1; 
+  /**
+   * @param {Function=} fn
+   * @return {Function}
+   */
+  function surveil(fn) {
+    var did = 0, spy = function() {
+      ++did;
+      return !fn || fn.apply(this, arguments);
+    };
+    spy.reset = function(to) {
+      did = to === +to ? to : 0;
+    };
+    spy.ran = function(expected) {
+      return null == expected ? 0 < did : expected === did;
+    };
+    return spy;
   }
   
-  function reset() { 
-    count.current = 0;
-    return true;
-  }
-  
-  function counted(expect) { 
-    var bool = expect === count.current;
-    reset();
-    return bool;
-  }
-  
-  function testNum(method, laps, fn) {
-    reset();
-    var bool = lap[method](laps, fn) >= 0 && counted(laps);
-    reset();
-    return bool;
-  }
-  
-  function testMap(method, laps, racers) {
-    reset();
-    var bool = isArray(lap[method](laps, racers), racers.length, 'number') && counted(laps*racers.length);
-    reset();
+  /**
+   * @param {string} method
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {boolean}
+   */
+  function verify(method, laps, racers) {
+    spy.reset();
+    var field = typeof racers == 'function' ? 1 : racers.length;
+    var output = lap[method](laps, racers);
+    var bool = racers !== output && isArray(output, field, 'number') && spy.ran(laps*field);
+    spy.reset();
     return bool;
   }
   
@@ -49,12 +65,13 @@
     return lap[m] && lap[m].sync && lap[m].async;
   }, aok, 1));
   
-  aok('timestamp()', lap.timestamp() > 0);
-  aok('time(laps, fn)', testNum('time', 1e3, count));
-  aok('time(laps, racers) ', testMap('time', 1e3, [count, count]));
-  aok('speed()', testMap('speed', 1e3, [count, count]));
+  aok('timestamp()', typeof lap.timestamp() == 'number' && lap.timestamp() > 0);
+  aok('time(laps, fn)', verify('time', 1e3, spy));
+  aok('time(laps, racers) ', verify('time', 1e3, [spy, spy]));
+  aok('speed(laps, fn)', verify('speed', 1e3, spy));
+  aok('speed(laps, racers)', verify('speed', 1e3, [spy, spy]));
   
-  lap.time.async(1e3, count, function(err, result) {
+  lap.time.async(1e3, spy, function(err, result) {
     aok('async result', !err && isArray(result));
   });
   
