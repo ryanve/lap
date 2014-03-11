@@ -8,17 +8,17 @@
 
 ### Methods
 
-#### `lap.timestamp()`
-- Get a hi-resolution timestamp
-- &rArr; number
-
 #### `lap.time(laps, racers)`
-- Time how long it takes racer to run the given number of laps.
+- Time how long it takes each racer to run the given number of laps
 - &rArr; array of times measured in milliseconds
 
 #### `lap.speed(laps, racers)`
-- Estimate each racer's average speed over a course of `laps`
+- Estimate each racer's average speed over a course of <var>laps</var>
 - &rArr; array of speeds measured in operations per second
+
+#### `lap.timestamp()`
+- Get a hi-resolution timestamp
+- &rArr; number measured in milliseconds
 
 ### `.async`
 
