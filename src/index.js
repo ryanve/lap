@@ -51,8 +51,8 @@
   expose('time', function(laps, racers) {
     if (typeof racers == 'function') racers = [racers];
     var start, end, f, n, r = [], i = 0, l = racers.length, stamp = api['timestamp'];
-    for (start = end || stamp(); i < l; end = stamp(), r[i++] = end - start) {
-      for (f = racers[i], n = 0; n++ < laps;) {
+    for (; i < l; end = stamp(), r[i++] = end - start) {
+      for (start = end || stamp(), f = racers[i], n = 0; n++ < laps;) { 
         f.call(api);
       }
     }
