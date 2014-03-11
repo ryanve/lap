@@ -1,5 +1,5 @@
 /*!
- * lap 0.2.2+201403110234
+ * lap 0.2.3+201403111205
  * https://github.com/ryanve/lap
  * MIT License (c) 2014 Ryan Van Etten
  */
