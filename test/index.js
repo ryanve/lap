@@ -3,6 +3,7 @@
   var aok = common ? require('aok') : root.aok;
   var lap = common ? require('../src') : root.lap;
   var spy = surveil();
+  var hires = lap.timestamp() < lap.timestamp(); // process.hrtime
   if (![].some) aok.prototype.express = aok.info; // alert in ie8-
 
   /**
@@ -34,11 +35,6 @@
    */
   function ascends(a) {
     return a.join() === a.slice().sort().join();
-  }
-  
-  function faster() {}
-  function slower() {
-    return +new Date;
   }
   
   /**
@@ -74,6 +70,19 @@
     return bool;
   }
   
+  /**
+   * @param {string} method
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @param {Function} test
+   * @return {boolean}
+   */
+  function tends(method, laps, racers, test) {
+    var samples = 64, i = samples, enough = samples - Math.sqrt(samples), tally = 0;
+    while (i--) if (test(lap[method](laps, racers)) && ++tally >= enough) return true;
+    return false;
+  }
+  
   aok('methods', !aok.fail(['timestamp', 'time', 'speed'], function(m) {
     return lap[m] && lap[m].sync && lap[m].async;
   }, aok, 1));
@@ -84,8 +93,15 @@
   aok('speed(laps, fn)', verify('speed', 1e3, spy));
   aok('speed(laps, racers)', verify('speed', 1e3, [spy, spy]));
   aok('ascends', ascends([0, 1, 1]) && ascends([0, 1]) && !ascends([2, 1]) && !ascends([1, 0, 1]));
-  aok('logical times', ascends(lap.time(1e5, [faster, slower])));
-  aok('logical speeds', ascends(lap.speed(1e5, [slower, faster])));
+  
+  hires && setTimeout(function() {
+    function faster() {}
+    function slower() {
+      return [+new Date].concat(1);
+    }
+    aok('logical times', tends('time', 1e4, [faster, slower], ascends));
+    aok('logical speeds', tends('speed', 1e4, [slower, faster], ascends));
+  }, 0);
   
   lap.time.async(1e3, spy, function(err, result) {
     aok('async result', !err && isArray(result, 1, 'number'));
