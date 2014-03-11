@@ -32,7 +32,7 @@ lap.time(1e5, [
   function() { document.getElementById('example') },
   function() { document.querySelector('#example') },
   function() { document.querySelectorAll('#example')[0] }
-]) // => [37.000000000261934, 79.99999999992724, 184.99999999949068]
+]) // => [40.000000000873115, 44.99999999825377, 116.00000000180444]
 ```
 
 <a name="speed"></a>
@@ -46,7 +46,7 @@ lap.speed(1e5, [
   function() { document.getElementById('example') },
   function() { document.querySelector('#example') },
   function() { document.querySelectorAll('#example')[0] }
-]) // => [2499999.9999454306, 1162790.6976834694, 505050.50504968845]
+]) // => [2500000.0004001777, 2222222.2219491494, 884955.7522315352]
 ```
 
 <a name="timestamp"></a>
@@ -88,7 +88,7 @@ lap.time.sync(1e5, [
   function() { document.getElementById('example') },
   function() { document.querySelector('#example') },
   function() { document.querySelectorAll('#example')[0] }
-]) // => [37.000000000261934, 79.99999999992724, 184.99999999949068]
+]) // => [40.000000000873115, 45.99999999481952, 115.00000000523869]
 ```
 
 ## Compatibility
