@@ -1,5 +1,5 @@
 /*!
- * lap 0.2.1+201403101313
+ * lap 0.2.2+201403110234
  * https://github.com/ryanve/lap
  * MIT License (c) 2014 Ryan Van Etten
  */
@@ -15,9 +15,8 @@
    * @param {Function} fn
    */
   function expose(name, fn) {
-    fn['sync'] = fn;
+    fn['sync'] = api[name] = fn;
     fn['async'] = async;
-    api[name] = fn;
   }
   
   /** 
@@ -30,7 +29,7 @@
       try {
         result = fn.apply(api, args);
       } catch (e) { 
-        err = e; 
+        err = e;
       }
       cb.call(api, err, result);
     }, 0);
