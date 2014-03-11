@@ -72,7 +72,7 @@
   aok('speed(laps, racers)', verify('speed', 1e3, [spy, spy]));
   
   lap.time.async(1e3, spy, function(err, result) {
-    aok('async result', !err && isArray(result));
+    aok('async result', !err && isArray(result, 1, 'number'));
   });
   
   lap.time.async(1e3, function() {
