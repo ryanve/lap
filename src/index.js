@@ -9,9 +9,8 @@
    * @param {Function} fn
    */
   function expose(name, fn) {
-    fn['sync'] = fn;
+    fn['sync'] = api[name] = fn;
     fn['async'] = async;
-    api[name] = fn;
   }
   
   /** 
@@ -24,7 +23,7 @@
       try {
         result = fn.apply(api, args);
       } catch (e) { 
-        err = e; 
+        err = e;
       }
       cb.call(api, err, result);
     }, 0);
