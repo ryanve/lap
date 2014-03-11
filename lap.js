@@ -1,5 +1,5 @@
 /*!
- * lap 0.2.4+201403111440
+ * lap 0.2.5+201403111908
  * https://github.com/ryanve/lap
  * MIT License (c) 2014 Ryan Van Etten
  */
@@ -34,6 +34,55 @@
       cb.call(api, err, result);
     }, 0);
   }
+  
+  /**
+   * @param {Array|Function} o
+   * @param {Function} fn
+   * @param {number} laps
+   * @return {Array}
+   */
+  function map(o, fn, laps) {
+    if (typeof o == 'function') return [fn(laps, o)];
+    for (var r = [], i = 0, l = o.length; i < l;) r[i] = fn(laps, o[i++]);
+    return r;
+  }
+
+  /**
+   * @param {number} laps
+   * @param {number} ms duration in milliseconds
+   * @return {number} laps/second
+   */
+  function rate(laps, ms) {
+    return 1000*laps/ms;
+  }
+
+  /**
+   * @param {number} laps
+   * @param {Function} racer
+   * @return {number} time (milliseconds) for `racer` to run `laps` times
+   */
+  function time(laps, racer) {
+    for (var i = 0, stamp = api['timestamp'], start = stamp(); i++ < laps;) racer.call(api);
+    return stamp() - start;
+  }
+  
+  /**
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {Array} times (milliseconds) for each racer to run `laps` times
+   */
+  expose('time', function(laps, racers) {
+    return map(racers, time, laps);
+  });
+
+  /**
+   * @param {number} laps
+   * @param {Array|Function} racers
+   * @return {Array} speeds (operations/second) for each racer to run `laps` times
+   */
+  expose('speed', function(laps, racers) {
+    return map(api['time'](laps, racers), rate, laps);
+  });
 
   /**
    * @return {number} hi-res timestamp in milliseconds
@@ -47,32 +96,6 @@
     return Date.now();
   } : function() {
     return (new Date).getTime();
-  });
-
-  /**
-   * @param {number} laps
-   * @param {Array|Function} racers
-   * @return {Array} times (milliseconds) for each racer to run `laps` times
-   */
-  expose('time', function(laps, racers) {
-    if (typeof racers == 'function') racers = [racers];
-    var start, end, f, n, r = [], i = 0, l = racers.length, stamp = api['timestamp'];
-    for (; i < l; end = stamp(), r[i++] = end - start) {
-      for (start = end || stamp(), f = racers[i], n = 0; n++ < laps;) { 
-        f.call(api);
-      }
-    }
-    return r;
-  });
-
-  /**
-   * @param {number} laps
-   * @param {Array|Function} racers
-   * @return {Array} speeds (operations/second) for each racer to run `laps` times
-   */
-  expose('speed', function(laps, racers) {
-    for (var r = api['time'](laps, racers), i = r.length; i--;) r[i] = 1000*laps/r[i];
-    return r;
   });
 
   return api;
