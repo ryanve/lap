@@ -29,12 +29,11 @@
   }
   
   /**
-   * @param {{length:number}} a
+   * @param {Array} a
    * @return {boolean}
    */
   function ascends(a) {
-    for (var prev = 0, curr = 1, l = a.length; curr < l;) if (a[curr++] < a[prev++]) return false;
-    return true;
+    return a.join() === a.slice().sort().join();
   }
   
   function faster() {}
@@ -84,7 +83,7 @@
   aok('time(laps, racers) ', verify('time', 1e3, [spy, spy]));
   aok('speed(laps, fn)', verify('speed', 1e3, spy));
   aok('speed(laps, racers)', verify('speed', 1e3, [spy, spy]));
-  aok('ascends', ascends([0, 1, 2, 2]) && !ascends([1, 0, 2]) && !ascends([2, 1]));
+  aok('ascends', ascends([0, 1, 1]) && ascends([0, 1]) && !ascends([2, 1]) && !ascends([1, 0, 1]));
   aok('logical times', ascends(lap.time(1e5, [faster, slower])));
   aok('logical speeds', ascends(lap.speed(1e5, [slower, faster])));
   
