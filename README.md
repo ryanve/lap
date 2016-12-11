@@ -1,7 +1,7 @@
 # lap
 #### JavaScript performance testing library for the browser or server
 
-## API ([0.2](../../releases))
+## API
 <a name="methods-toc"></a>
 #### Methods
 
@@ -96,18 +96,9 @@ lap.time.sync(1e5, [
 Works...everywhere<b>!</b> Tested in node, Chrome, FF, Opera, IE8
 
 ## Contribute
-- Make edits in [/<b>src</b>](./src)
-- Run [tests](test) in [node](#cli) or in the [browser](test/index.html)
 
 <a name="cli"></a>
 ```sh
-$ npm install # install devDependencies
-$ grunt jshint:sub # lint sub dirs
-$ grunt test # run tests
+$ npm start
+$ npm test
 ```
-
-## Fund
-Support this project by [tipping the developer](https://www.gittip.com/ryanve/) <samp><b>=)</b></samp>
-
-## License
-[MIT](package.json#L6-L7)

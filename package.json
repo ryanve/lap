@@ -5,17 +5,50 @@
   "homepage": "https://github.com/ryanve/lap",
   "license": "MIT",
   "author": "Ryan Van Etten",
-  "keywords": ["performance", "speed", "time", "timestamp", "server", "browser"],
+  "scripts": {
+    "lint": "jshint lap.js && jshint test.js",
+    "vendor": "browserify -r aok -o vendor.js",
+    "prestart": "npm update",
+    "start": "npm run vendor",
+    "pretest": "npm run lint",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "profiling",
+    "performance",
+    "benchmarking",
+    "speed",
+    "time",
+    "timestamp",
+    "server",
+    "browser"
+  ],
   "main": "./lap.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ryanve/lap.git"
   },
+  "bugs": {
+    "url": "https://github.com/ryanve/lap/issues"
+  },
   "devDependencies": {
-    "aok": "~1.8.1",
-    "grunt": "~0.4.2",
-    "grunt-contrib-uglify": "~0.3.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-jshint": "~0.8.0"
+    "aok": "^1.9.0",
+    "browserify": "^13.1.1",
+    "jshint": "^2.9.3"
+  },
+  "jshintConfig": {
+    "asi": false,
+    "boss": true,
+    "browser": true,
+    "eqnull": true,
+    "expr": true,
+    "latedef": "nofunc",
+    "laxcomma": true,
+    "maxerr": 5,
+    "node": true,
+    "sub": true,
+    "supernew": true,
+    "undef": true,
+    "unused": true
   }
 }

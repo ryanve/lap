@@ -1,10 +1,4 @@
-/*!
- * lap 0.2.5+201403111908
- * https://github.com/ryanve/lap
- * MIT License (c) 2014 Ryan Van Etten
- */
-
-(function(root, name, make) {
+!function(root, name, make) {
   if (typeof module != 'undefined' && module.exports) module.exports = make();
   else root[name] = make();
 }(this, 'lap', function() {
@@ -18,8 +12,8 @@
     fn['sync'] = api[name] = fn;
     fn['async'] = async;
   }
-  
-  /** 
+
+  /**
    * @this {Function} sync function to run async
    */
   function async() {
@@ -28,13 +22,13 @@
       var err, result;
       try {
         result = fn.apply(api, args);
-      } catch (e) { 
+      } catch (e) {
         err = e;
       }
       cb.call(api, err, result);
     }, 0);
   }
-  
+
   /**
    * @param {Array|Function} o
    * @param {Function} fn
@@ -65,7 +59,7 @@
     for (var i = 0, stamp = api['timestamp'], start = stamp(); i++ < laps;) racer.call(api);
     return stamp() - start;
   }
-  
+
   /**
    * @param {number} laps
    * @param {Array|Function} racers
@@ -99,4 +93,4 @@
   });
 
   return api;
-}));
+});
