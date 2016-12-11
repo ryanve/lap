@@ -1,7 +1,6 @@
-(function(root) {
-  var common = typeof module != 'undefined' && !!module.exports;
-  var aok = common ? require('aok') : root.aok;
-  var lap = common ? require('../src') : root.lap;
+!function(root) {
+  var aok = require('aok');
+  var lap = typeof window == 'undefined' ? require('./') : root.lap;
   var spy = surveil();
   var hires = lap.timestamp() < lap.timestamp(); // process.hrtime
   if (![].some) aok.prototype.express = aok.info; // alert in ie8-
@@ -16,7 +15,7 @@
       return typeof v === type;
     }, stack, 1);
   }
-  
+
   /**
    * @param {*} o value to test
    * @param {!(number|Array)=} of expected length
@@ -28,7 +27,7 @@
     if (o.length !== (of === +of ? of : isArray(of) ? of.length : +o.length)) return false;
     return !type || are(o, type);
   }
-  
+
   /**
    * @param {Array} a
    * @return {boolean}
@@ -36,7 +35,7 @@
   function ascends(a) {
     return a.join() === a.slice().sort().join();
   }
-  
+
   /**
    * @param {Function=} fn
    * @return {Function}
@@ -54,7 +53,7 @@
     };
     return spy;
   }
-  
+
   /**
    * @param {string} method
    * @param {number} laps
@@ -69,7 +68,7 @@
     spy.reset();
     return bool;
   }
-  
+
   /**
    * @param {string} method
    * @param {number} laps
@@ -82,18 +81,18 @@
     while (i--) if (test(lap[method](laps, racers)) && ++tally >= enough) return true;
     return false;
   }
-  
+
   aok('methods', !aok.fail(['timestamp', 'time', 'speed'], function(m) {
     return lap[m] && lap[m].sync && lap[m].async;
   }, aok, 1));
-  
+
   aok('timestamp()', typeof lap.timestamp() == 'number' && lap.timestamp() > 0);
   aok('time(laps, fn)', verify('time', 1e3, spy));
   aok('time(laps, racers) ', verify('time', 1e3, [spy, spy]));
   aok('speed(laps, fn)', verify('speed', 1e3, spy));
   aok('speed(laps, racers)', verify('speed', 1e3, [spy, spy]));
   aok('ascends', ascends([0, 1, 1]) && ascends([0, 1]) && !ascends([2, 1]) && !ascends([1, 0, 1]));
-  
+
   hires && setTimeout(function() {
     function faster() {}
     function slower() {
@@ -102,14 +101,14 @@
     aok('logical times', tends('time', 1e4, [faster, slower], ascends));
     aok('logical speeds', tends('speed', 1e4, [slower, faster], ascends));
   }, 0);
-  
+
   lap.time.async(1e3, spy, function(err, result) {
     aok('async result', !err && isArray(result, 1, 'number'));
   });
-  
+
   lap.time.async(1e3, function() {
     throw new Error;
   }, function(err) {
     aok('async error', !!err);
   });
-}(this));
+}(this);

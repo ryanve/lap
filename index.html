@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html class="checkered" lang="en-US">
+<title>lap</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="JavaScript performance testing library for the browser or server">
+
+<style>
+  *, :before, :after { box-sizing: border-box }
+  html { font: 1em/2 sans-serif }
+  body { width: 100%; margin: 0 auto }
+  code { font-family: inherit }
+  header { display: block }
+  a { text-decoration: none }
+  a:hover { text-decoration: underline }
+
+  .reset {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .checkered {
+    background-color: whitesmoke;
+    background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black),
+    linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);
+    background-size: 240px 240px;
+    background-position: 0 0, 120px 120px;
+  }
+
+  .checker {
+    margin: 0;
+    padding: 0;
+    font-size: 60px;
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+    width: 120px;
+    height: 120px;
+  }
+
+  .checker--black {
+    color: whitesmoke;
+    background-color: black;
+  }
+
+  .checker--white {
+    color: black;
+    background-color: whitesmoke;
+  }
+
+  .call-to-action {
+    font-weight: bold;
+    padding: 5px;
+    display: table;
+    background-color: black;
+    color: whitesmoke;
+  }
+
+  .checker--prose {
+    text-align: left;
+    font-size: inherit;
+    font-weight: bold;
+    line-height: 1;
+    padding: 10px;
+  }
+</style>
+
+<header>
+  <h1 class="reset"><b class="checker checker--white">l</b><b class="checker checker--black">a</b><b class="checker checker--white">p</b></h1>
+</header>
+
+<p class="checker checker--black checker--prose">
+  Open the console to try <code>lap</code> in the browser or to check tests.
+</p>
+
+<ul class="reset">
+  <li class="reset"><a class="checker checker--prose checker--white" href="https://github.com/ryanve/lap">Github</a>
+  <li class="reset"><a class="checker checker--prose checker--black" href="https://www.npmjs.com/package/lap">npm</a>
+</ul>
+
+<script src="lap.js"></script>
+<script src="vendor.js"></script>
+<script src="test.js"></script>
